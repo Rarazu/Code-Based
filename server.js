@@ -6,7 +6,11 @@ const PORT = 8000
 let routes = [
     {prefix: `/siswa`, route: require(`./routers/siswa`)},
     {prefix: `/user`, route: require(`./routers/user`)},
-    {prefix: `/pelanggaran`, route: require(`./routers/pelanggaran`)}
+    {prefix: `/pelanggaran`, route: require(`./routers/pelanggaran`)},
+    {
+        prefix: `/pelanggaran_siswa`, 
+        route: require(`./routers/pelanggaran_siswa`)
+    }
 ]
 
 for (let i = 0; i < routes.length; i++) {
