@@ -6,8 +6,16 @@ app.use(express.json()) //membaca data request dgn tipe json
 // call siswa controller
 let siswaController = require("../controllers/siswaController")
 
+// call testMiddleware
+let testMiddleware = require("../middlewares/testMiddleware")
+let authorization = require("../middlewares/authorization")
+
 //endpoint get data siswa
-app.get("/", siswaController.getDataSiswa)
+app.get("/", [
+    testMiddleware.middleware1, testMiddleware.middleware2,
+    authorization.authorization
+],
+    siswaController.getDataSiswa)
 
 // endpoint add data siswa
 app.post("/", siswaController.addDataSiswa)

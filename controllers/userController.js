@@ -4,6 +4,7 @@ const req = require("express/lib/request");
 
 //memanggil file model untuk siswa
 let modelUser = require("../models/index").user
+let jwt = require(`jsonwebtoken`)
 
 exports.getDataUser = (request, response) => {
     modelUser.findAll()
@@ -69,4 +70,35 @@ exports.deleteDataUser = (request, response) => {
             message: error.message
         })
     })
+}
+
+exports.authentication = async(request, response) => {
+    let data = {
+        username: request.body.username,
+        password: md5(request.body.password)
+    }
+
+    //validasi (cek data di tabel user)
+    let result = await modelUser.findOne({where: data})
+
+    if (result) {
+        // data ditemukan
+
+        // payload = data/informasi yg akan dienkripsi
+        let payload = JSON.stringify(result) // koversi bentuk objek -> JSON
+        let secretKey = `Sequelize itu sangat menyenangkan`
+
+        // generate token
+        let token = jwt.sign(payload, secretKey)
+        return response.json({
+            logged: true,
+            token: token
+        })
+    } else{
+        // data tidak ditemukan
+        return response.json({
+            logged: false,
+            message: `Invalid username or password`
+        })
+    }
 }

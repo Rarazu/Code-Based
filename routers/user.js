@@ -18,4 +18,6 @@ app.put("/:id_user", userController.editDataUser)
 // endpoint delete siswa
 app.delete("/:id_user", userController.deleteDataUser)
 
+app.post("/auth", userController.authentication)
+
 module.exports = app
