@@ -9,6 +9,7 @@ let siswaController = require("../controllers/siswaController")
 // call testMiddleware
 let testMiddleware = require("../middlewares/testMiddleware")
 let authorization = require("../middlewares/authorization")
+let uploadImage = require("../middlewares/uploadImage")
 
 //endpoint get data siswa
 app.get("/", [
@@ -18,12 +19,18 @@ app.get("/", [
     siswaController.getDataSiswa)
 
 // endpoint add data siswa
-app.post("/", siswaController.addDataSiswa)
+app.post("/", [
+    uploadImage.upload.single(`image`), authorization.authorization
+], siswaController.addDataSiswa)
 
 // endpoint edit siswa
-app.put("/:id_siswa", siswaController.editDataSiswa)
+app.put("/:id_siswa", [
+    uploadImage.upload.single(`image`), authorization.authorization
+], siswaController.editDataSiswa)
 
 // endpoint delete siswa
-app.delete("/:id_siswa", siswaController.deleteDataSiswa)
+app.delete("/:id_siswa",[
+    authorization.authorization
+], siswaController.deleteDataSiswa)
 
 module.exports = app

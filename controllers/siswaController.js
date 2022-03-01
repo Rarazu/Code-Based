@@ -3,6 +3,8 @@ const req = require("express/lib/request");
 
 //memanggil file model untuk siswa
 let modelSiswa = require("../models/index").siswa
+let path = require("path")
+let fs = require("fs")
 
 exports.getDataSiswa = (request, response) => {
     modelSiswa.findAll()
@@ -15,12 +17,19 @@ exports.getDataSiswa = (request, response) => {
 }
 
 exports.addDataSiswa = (request, response) => {
+    if (!request.file) {
+        return response.json({
+            message: `Nothing to upload`
+        })
+    }
+
     //tampung data request
     let newSiswa = {
         nama: request.body.nama,
         kelas : request.body.kelas,
         poin: request.body.poin,
-        nis: request.body.nis
+        nis: request.body.nis,
+        image: request.file.filename
     }
 
     modelSiswa.create(newSiswa)
@@ -34,13 +43,25 @@ exports.addDataSiswa = (request, response) => {
     })
 }
 
-exports.editDataSiswa = (request, response) => {
+exports.editDataSiswa = async(request, response) => {
     let id = request.params.id_siswa
     let dataSiswa = {
         nama: request.body.nama,
         kelas : request.body.kelas,
         poin: request.body.poin,
         nis: request.body.nis
+    }
+
+    if(request.file){
+        // jika edit menyertakan file gambar
+        let siswa = await modelSiswa.findOne({where: {id_siswa: id}})
+        let oldFileName = siswa.image
+
+        let location = path.join(__dirname, "../image", oldFileName)
+        fs.unlink(location, error => console.log(error))
+
+        // menyisipkan nama file baru ke dalam objek dataSiswa
+        dataSiswa.image = request.file.filename
     }
 
     modelSiswa.update(dataSiswa, {where:{id_siswa: id}})
@@ -56,8 +77,18 @@ exports.editDataSiswa = (request, response) => {
     })
 }
 
-exports.deleteDataSiswa = (request, response) => {
+exports.deleteDataSiswa = async(request, response) => {
     let id = request.params.id_siswa
+
+    // ambil dulu data filename yg akan dihapus
+    let siswa = await modelSiswa.findOne({where: {id_siswa: id}})
+    if (siswa) {
+        let oldFileName = siswa.image
+
+        // delete file
+        let location = path.join(__dirname,"../image", oldFileName)
+        fs.unlink(location, error => log)
+    }
 
     modelSiswa.destroy({where: {id_siswa: id}})
     .then(result => {
