@@ -8,6 +8,7 @@
 5. Mengubah konfigurasi database di config/config.json (ubah pada bagian ‘database’ sesuai nama databse yg dibuat)
 6. Membuat file migration untuk menciptakan struktur table. 
 Note: buatlah file migration untuk table parent terlebih dahulu!
+
 a. Migration tabel siswa :
 sequelize model:create --name siswa --attributes nis:string,nama:string,kelas:string,poin:integer
 
