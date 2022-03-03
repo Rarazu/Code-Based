@@ -10,12 +10,16 @@
 Note: buatlah file migration untuk table parent terlebih dahulu!
 a. Migration tabel siswa :
 sequelize model:create --name siswa --attributes nis:string,nama:string,kelas:string,poin:integer
+
 b. Migration tabel user :
 sequelize model:create --name user --attributes nama_user:string,username:string,password:string
+
 c. Migration tabel pelanggaran :
 sequelize model:create --name pelanggaran --attributes nama_pelanggaran:string,poin:double
+
 d. Migration tabel pelanggaran_siswa :
 sequelize model:create --name pelanggaran_siswa --attributes waktu:date,id_siswa:integer,id_user:integer
+
 e. Migration tabel detail_pelanggaran_siswa :
 sequelize model:create --name detail_pelanggaran_siswa --attributes id_pelanggaran_siswa:integer,id_pelanggaran:integer
 
