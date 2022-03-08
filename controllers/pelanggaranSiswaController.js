@@ -3,6 +3,8 @@ const req = require("express/lib/request")
 
 let pelanggaranSiswaModel = require("../models/index").pelanggaran_siswa
 let detailPelanggaranSiswaModel = require("../models/index").detail_pelanggaran_siswa
+let siswaModel = require("../models/index").siswa
+let pelanggaranModel = require("../models/index").pelanggaran
 
 exports.getData = async(request, response) => {
     let data = await pelanggaranSiswaModel.findAll({
@@ -15,7 +17,36 @@ exports.getData = async(request, response) => {
     return response.json(data)
 }
 
-exports.addData = (request, response) => {
+exports.addData = async(request, response) => {
+    // proses pengurangan poin dari siswa yg menlanggar
+    // 1. mengambil poin dari siswa yg bersangkutan
+    let siswa = await siswaModel.findOne({
+        where: {id_siswa: request.body.id_siswa}
+    })
+    let poinSiswa = siswa.poin
+
+    // 2. mengambil nilai poin dari tiap pelanggarannya
+    let detail = request.body.detail_pelanggaran_siswa
+    let jumlahPoinPelanggaran = 0
+    for (let i = 0; i < detail.length; i++) {
+        // ambil poin dari tiap pelanggaran
+        let pelanggaran = await pelanggaranModel.findOne({
+            where: {id_pelanggaran: detail[i].id_pelanggaran}
+        })
+        let poinPelanggaran = pelanggaran.poin
+        jumlahPoinPelanggaran += poinPelanggaran
+    }
+
+    // 3. poin siswa dikurangi jumlah poin pelanggaran
+    let newPoin = poinSiswa - jumlahPoinPelanggaran
+
+    // 4. update poin siswa
+    await siswaModel.update({poin: newPoin},
+    {
+        where: {id_siswa: request.body.id_siswa}
+    })
+
+    // proses insert ke tabel pelanggaran siswa dan detail
     let newData = {
         waktu: request.body.waktu,
         id_siswa: request.body.id_siswa,

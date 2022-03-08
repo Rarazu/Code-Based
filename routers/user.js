@@ -6,11 +6,13 @@ app.use(express.json()) //membaca data request dgn tipe json
 // call siswa controller
 let userController = require("../controllers/userController")
 
+const userValidator = require("../middlewares/userValidator")
+
 //endpoint get data siswa
 app.get("/", userController.getDataUser)
 
 // endpoint add data siswa
-app.post("/", userController.addDataUser)
+app.post("/", [userValidator.validate], userController.addDataUser)
 
 // endpoint edit siswa
 app.put("/:id_user", userController.editDataUser)

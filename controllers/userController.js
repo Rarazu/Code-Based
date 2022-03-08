@@ -2,6 +2,8 @@ const md5 = require("md5")
 const { request, response } = require("express");
 const req = require("express/lib/request");
 
+const {validationResult} = require("express-validator")
+
 //memanggil file model untuk siswa
 let modelUser = require("../models/index").user
 let jwt = require(`jsonwebtoken`)
@@ -17,6 +19,10 @@ exports.getDataUser = (request, response) => {
 }
 
 exports.addDataUser = (request, response) => {
+    let error = validationResult(request)
+    if (!error.isEmpty()) {
+        return response.json(error.array())
+    }
     //tampung data request
     let newUser = {
         nama_user: request.body.nama_user,
