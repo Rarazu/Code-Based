@@ -32,7 +32,7 @@
                 </li>
             </ul>
         <li>
-            Review file migration dan models yang telah dibuat sesuai dengan nama yang ada pada database dan Relasi di setiap tabel
+            Review file migration dan models yang telah dibuat sesuai dengan <b>nama</b> yang ada pada database dan <b>Relasi</b> di setiap tabel
             <ul>
                 <li>Pada models mengenalkan id sesuai table dibawah siswa.init dan mengenalkan nama table dibawah modelName </li>
                 <li>Contoh seperti di bawah</li>
