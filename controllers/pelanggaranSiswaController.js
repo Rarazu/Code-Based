@@ -17,6 +17,48 @@ exports.getData = async(request, response) => {
     return response.json(data)
 }
 
+exports.filterPelanggaran = async (request, response) => {
+    // filter tgl awal sama tgl akhir
+    let start = request.body.start // tgl awal
+    let end = request.body.end // tgl akhir
+
+    /** 
+     * query = select * from pelanggaran_siswa where waktu
+     * between start and end
+     */
+    
+    let sequelize = require(`sequelize`)
+    let Op = sequelize.Op
+
+    let data = await pelanggaranSiswaModel.findAll({
+        include: ["siswa", "user", {
+            model:  detailPelanggaranSiswaModel,
+            as:  "detail_pelanggaran_siswa",
+            include: ["pelanggaran"]
+        }],
+        where : {
+            waktu: {[Op.between]: [start, end]}
+        }
+    })
+    return response.json(data)
+}
+
+exports.findPelanggaranSiswa = async(request, response) => {
+    let id = request.params.id_siswa
+    let data = await pelanggaranSiswaModel.findAll({
+        include: ["siswa", "user", {
+            model:  detailPelanggaranSiswaModel,
+            as:  "detail_pelanggaran_siswa",
+            include: ["pelanggaran"]
+        }],
+        where: {
+            id_siswa: id
+        }
+    })
+    return response.json(data)
+
+}
+
 exports.addData = async(request, response) => {
     // proses pengurangan poin dari siswa yg menlanggar
     // 1. mengambil poin dari siswa yg bersangkutan

@@ -3,19 +3,25 @@ const app = express()
 
 app.use(express.json()) //membaca data request dgn tipe json
 
-// call siswa controller
+// call pelanggaran controller
 let pelanggaranController = require("../controllers/pelanggaranController")
 
-//endpoint get data siswa
+// call authorization
+let authorization = require("../middlewares/authorization")
+
+//endpoint get data pelanggaran
 app.get("/", pelanggaranController.getDataPelanggaran)
 
-// endpoint add data siswa
+// endpoint find pelanggaran
+app.post("/find", [authorization.authorization], pelanggaranController.findPelanggaran)
+
+// endpoint add data pelanggaran
 app.post("/", pelanggaranController.addDataPelanggaran)
 
-// endpoint edit siswa
+// endpoint edit pelanggaran
 app.put("/:id_pelanggaran", pelanggaranController.editDataPelanggaran)
 
-// endpoint delete siswa
+// endpoint delete pelanggaran
 app.delete("/:id_pelanggaran", pelanggaranController.deleteDataPelanggaran)
 
 module.exports = app
