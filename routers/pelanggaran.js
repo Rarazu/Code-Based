@@ -10,7 +10,7 @@ let pelanggaranController = require("../controllers/pelanggaranController")
 let authorization = require("../middlewares/authorization")
 
 //endpoint get data pelanggaran
-app.get("/", pelanggaranController.getDataPelanggaran)
+app.get("/", [authorization.authorization], pelanggaranController.getDataPelanggaran)
 
 // endpoint find pelanggaran
 app.post("/find", [authorization.authorization], pelanggaranController.findPelanggaran)

@@ -98,7 +98,7 @@ exports.addData = async(request, response) => {
     // insert ke tabel pelanggaran_siswa
     pelanggaranSiswaModel.create(newData)
     .then(result => {
-        let detail_pelanggaran_siswa =request.body.detail_pelanggaran_siswa
+        let detail_pelanggaran_siswa = request.body.detail_pelanggaran_siswa
         // asumsinya detail_pelanggaran_siswa itu bertipe array
         let id = result.id_pelanggaran_siswa
         for (let i = 0; i < detail_pelanggaran_siswa.length; i++) {
