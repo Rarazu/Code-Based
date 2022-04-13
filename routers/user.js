@@ -17,13 +17,13 @@ app.get("/", [authorization.authorization], userController.getDataUser)
 app.post("/find", [authorization.authorization], userController.findUser)
 
 // endpoint add data user
-app.post("/", [userValidator.validate], userController.addDataUser)
+app.post("/", [authorization.authorization],[userValidator.validate], userController.addDataUser)
 
 // endpoint edit user
-app.put("/:id_user", userController.editDataUser)
+app.put("/:id_user", [authorization.authorization],userController.editDataUser)
 
 // endpoint delete user
-app.delete("/:id_user", userController.deleteDataUser)
+app.delete("/:id_user",[authorization.authorization], userController.deleteDataUser)
 
 app.post("/auth", userController.authentication)
 

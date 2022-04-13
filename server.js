@@ -3,6 +3,8 @@ const app = express()
 const PORT = 8000
 const cors = require(`cors`)
 app.use(cors())
+app.use(express.static(__dirname))
+
 // prefix = imbuan endpoint
 let routes = [
     {prefix: `/siswa`, route: require(`./routers/siswa`)},

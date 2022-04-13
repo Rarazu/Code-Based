@@ -16,12 +16,12 @@ app.get("/", [authorization.authorization], pelanggaranController.getDataPelangg
 app.post("/find", [authorization.authorization], pelanggaranController.findPelanggaran)
 
 // endpoint add data pelanggaran
-app.post("/", pelanggaranController.addDataPelanggaran)
+app.post("/", [authorization.authorization], pelanggaranController.addDataPelanggaran)
 
 // endpoint edit pelanggaran
-app.put("/:id_pelanggaran", pelanggaranController.editDataPelanggaran)
+app.put("/:id_pelanggaran",  [authorization.authorization], pelanggaranController.editDataPelanggaran)
 
 // endpoint delete pelanggaran
-app.delete("/:id_pelanggaran", pelanggaranController.deleteDataPelanggaran)
+app.delete("/:id_pelanggaran",  [authorization.authorization], pelanggaranController.deleteDataPelanggaran)
 
 module.exports = app
