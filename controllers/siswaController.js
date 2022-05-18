@@ -110,7 +110,7 @@ exports.deleteDataSiswa = async(request, response) => {
 
         // delete file
         let location = path.join(__dirname,"../image", oldFileName)
-        fs.unlink(location, error => log)
+        fs.unlink(location, error => console.log(error))
     }
 
     modelSiswa.destroy({where: {id_siswa: id}})
